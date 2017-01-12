@@ -7,6 +7,7 @@ var gutil = require('gulp-util');
 var uglify = require('gulp-uglify');
 var sourcemaps = require('gulp-sourcemaps');
 var buffer = require('vinyl-buffer');
+var tslint = require('gulp-tslint');
 var paths = {
     pages: ['./*.html']
 };
@@ -30,10 +31,18 @@ var bundle = function () {
         .pipe(gulp.dest('dist'));
 };
 
-gulp.task('copy-html', function () {
-    gulp.src(paths.pages).pipe(gulp.dest('dist'));
+gulp.task('lint', function() {
+    return gulp.src('src/**/*.ts')
+        .pipe(tslint({
+            formatter: 'verbose'
+        }))
+        .pipe(tslint.report());
 });
 
-gulp.task('default', ['copy-html'], bundle);
+gulp.task('copy-html', function () {
+    return gulp.src(paths.pages).pipe(gulp.dest('dist'));
+});
+
+gulp.task('default', ['lint', 'copy-html'], bundle);
 watchedBrowserify.on('update', bundle);
 watchedBrowserify.on('log', gutil.log);
