@@ -19,7 +19,10 @@
     "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-typecast", "check-module", "check-separator", "check-type"],
     "eofline": false,
     "trailing-comma": [false],
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "max-classes-per-file": [
+      false
+    ]
   },
   "jsRules": {
     /*
