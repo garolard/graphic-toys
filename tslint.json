@@ -16,7 +16,10 @@
     "quotemark": [true, "single", "avoid-escape"],
     "no-use-before-declare": true,
     "no-unused-variable": [true],
-    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-typecast", "check-module", "check-separator", "check-type"]
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-typecast", "check-module", "check-separator", "check-type"],
+    "eofline": false,
+    "trailing-comma": [false],
+    "object-literal-sort-keys": false
   },
   "jsRules": {
     /*
