@@ -14,26 +14,42 @@ class Rectangle implements Game.IGameObject {
 
     private center: Point;
     private size: Size;
-    private direction: number;
+    private horizontalDirection: number;
+    private verticalDirection: number;
 
     constructor(center: Point, size: Size) {
         this.center = center;
         this.size = size;
-        this.direction = 0;
+        this.horizontalDirection = 0;
+        this.verticalDirection = 0;
     }
 
     public update() {
-        if (this.direction === 0) {
-            if (this.center.x - this.size.width / 2 > 0) {
+        if (this.isMovingToLeft()) {
+            if (!this.reachLeftLimit()) {
                 this.center.x -= 5;
             } else {
-                this.direction = 1;
+                this.horizontalDirection = 1;
             }
         } else {
-            if (this.center.x + this.size.height / 2 < Game.getCanvas().width) {
+            if (!this.reachRightLimit()) {
                 this.center.x += 5;
             } else {
-                this.direction = 0;
+                this.horizontalDirection = 0;
+            }
+        }
+
+        if (this.isMovingToTop()) {
+            if (!this.reachTopLimit()) {
+                this.center.y -= 5;
+            } else {
+                this.verticalDirection = 1;
+            }
+        } else {
+            if (!this.reachBottomLimit()) {
+                this.center.y += 5;
+            } else {
+                this.verticalDirection = 0;
             }
         }
     }
@@ -45,6 +61,38 @@ class Rectangle implements Game.IGameObject {
             this.center.y - this.size.height / 2,
             this.size.width,
             this.size.height);
+    }
+
+    private isMovingToLeft(): boolean {
+        return this.horizontalDirection === 0;
+    }
+
+    private isMovingToRight(): boolean {
+        return this.horizontalDirection === 1;
+    }
+
+    private isMovingToTop(): boolean {
+        return this.verticalDirection === 0;
+    }
+
+    private isMovingToBottom(): boolean {
+        return this.verticalDirection === 1;
+    }
+
+    private reachLeftLimit(): boolean {
+        return this.center.x - this.size.width / 2 <= 0;
+    }
+
+    private reachRightLimit(): boolean {
+        return this.center.x + this.size.width / 2 >= Game.getCanvas().width;
+    }
+
+    private reachTopLimit(): boolean {
+        return this.center.y - this.size.height / 2 <= 0;
+    }
+
+    private reachBottomLimit(): boolean {
+        return this.center.y + this.size.height / 2 >= Game.getCanvas().height;
     }
 }
 
