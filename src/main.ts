@@ -1,16 +1,8 @@
 import * as Game from './game';
+import { GameObject } from './game';
+import { Point, Size } from './foundation';
 
-class Point {
-    public x: number;
-    public y: number;
-}
-
-class Size {
-    public width: number;
-    public height: number;
-}
-
-class Rectangle implements Game.IGameObject {
+class Rectangle implements GameObject {
 
     private center: Point;
     private size: Size;
@@ -67,17 +59,17 @@ class Rectangle implements Game.IGameObject {
         return this.horizontalDirection === 0;
     }
 
-    private isMovingToRight(): boolean {
-        return this.horizontalDirection === 1;
-    }
+    // private isMovingToRight(): boolean {
+    //     return this.horizontalDirection === 1;
+    // }
 
     private isMovingToTop(): boolean {
         return this.verticalDirection === 0;
     }
 
-    private isMovingToBottom(): boolean {
-        return this.verticalDirection === 1;
-    }
+    // private isMovingToBottom(): boolean {
+    //     return this.verticalDirection === 1;
+    // }
 
     private reachLeftLimit(): boolean {
         return this.center.x - this.size.width / 2 <= 0;

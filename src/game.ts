@@ -5,9 +5,9 @@ let mainContext: CanvasRenderingContext2D;
 let desiredFps: number = 0;
 let fpsInterval: number = 0;
 let startTime: number = Date.now();
-let gameObjects: IGameObject[];
+let gameObjects: GameObject[];
 
-export interface IGameObject {
+export interface GameObject {
     update(): void;
     paint(): void;
 }
@@ -22,7 +22,7 @@ export function entities() {
     return gameObjects;
 }
 
-export function addGameObject(gameObject: IGameObject) {
+export function addGameObject(gameObject: GameObject) {
     gameObjects.push(gameObject);
 }
 

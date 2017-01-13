@@ -1,11 +1,12 @@
 {
-    "files": [
-        "src/main.ts"
-    ],
     "compilerOptions": {
         "noImplicitAny": true,
         "target": "es5"
     },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.spec.ts"
+    ],
     "exclude": [
         "dist/",
         "node_modules/"

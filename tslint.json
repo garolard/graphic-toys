@@ -20,7 +20,13 @@
     "eofline": false,
     "trailing-comma": [false],
     "object-literal-sort-keys": false,
+    "ordered-imports": [
+      false
+    ],
     "max-classes-per-file": [
+      false
+    ],
+    "interface-name": [
       false
     ]
   },
