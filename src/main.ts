@@ -19,6 +19,12 @@ function start() {
     clearStage();
     Game.addGameObject(getBasicRectangle());
 
+    const rect = new Rectangle(Game.getCanvas(), {x: 40, y: 40}, {width: 20, height: 20});
+    Game.addGameObject(rect);
+
+    const rect2 = new Rectangle(Game.getCanvas(), {x: 400, y: 53}, {width: 45, height: 45});
+    Game.addGameObject(rect2);
+
     loop();
 }
 
