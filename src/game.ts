@@ -1,4 +1,5 @@
 import * as Context from './context';
+import { Size } from './foundation';
 
 let mainCanvas: HTMLCanvasElement;
 let mainContext: CanvasRenderingContext2D;
@@ -10,6 +11,13 @@ let gameObjects: GameObject[];
 export interface GameObject {
     update(): void;
     paint(): void;
+}
+
+// Esta interface debería vivir aqui???
+export interface GameStage {
+    size: Size;
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
 }
 
 export function init() {
@@ -26,8 +34,12 @@ export function addGameObject(gameObject: GameObject) {
     gameObjects.push(gameObject);
 }
 
-export function getCanvas() {
-    return mainCanvas;
+export function getCanvas(): GameStage {
+    return {
+        size: {width: mainCanvas.width, height: mainCanvas.height},
+        canvas: mainCanvas,
+        context: mainContext
+    };
 }
 
 export function getContext() {
