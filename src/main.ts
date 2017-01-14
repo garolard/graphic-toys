@@ -6,13 +6,9 @@ import { Rectangle } from './shapes';
 let stage: BasicStage;
 
 function start() {
-    stage = Game.getBasicStage('main-canvas');
-    Game.setDesiredFps(60);
-    Game.setFrameStartTime(Date.now());
+    stage = Game.init('main-canvas') as BasicStage;
 
     stage.clear();
-    // stage.context.fillStyle = 'rgb(0,0,0)';
-    // stage.context.fillRect(0, 0, stage.bounds.width, stage.bounds.height);
     stage.addActor(getBasicRectangle());
 
     const rect = new Rectangle({x: 40, y: 40}, {width: 20, height: 20});
@@ -21,7 +17,7 @@ function start() {
     const rect2 = new Rectangle({x: 400, y: 53}, {width: 45, height: 45});
     stage.addActor(rect2);
 
-    loop();
+    Game.start();
 }
 
 function getBasicRectangle(): Rectangle {
@@ -37,17 +33,4 @@ function getBasicRectangle(): Rectangle {
     return rect;
 }
 
-function loop() {
-    window.requestAnimationFrame(loop);
-
-    if (Game.getFrameDuration() > Game.getFpsInterval()) {
-        Game.setFrameStartTime(Date.now() - (Game.getFrameDuration() % Game.getFpsInterval()));
-
-        const basicStage = stage as BasicStage;
-        basicStage.clear();
-        basicStage.update();
-        basicStage.paint();
-    }
-}
-
-window.requestAnimationFrame(start);
+start();

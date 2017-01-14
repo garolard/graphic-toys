@@ -1,5 +1,6 @@
 import { Size } from './foundation';
 
+let mainStage: Stage;
 let desiredFps: number = 0;
 let fpsInterval: number = 0;
 let startTime: number = Date.now();
@@ -53,26 +54,49 @@ export class BasicStage implements Stage {
     }
 }
 
-export function getBasicStage(canvasSelector: string) {
-    const stage = new BasicStage();
-    stage.initForCanvas(canvasSelector);
-    return stage;
+export function init(canvasSelector: string): Stage {
+    setDesiredFps(60);
+    initBasicStage(canvasSelector);
+    return mainStage;
 }
 
-export function setDesiredFps(fps: number) {
+export function start() {
+    window.requestAnimationFrame(loop);
+}
+
+function setDesiredFps(fps: number) {
     desiredFps = fps;
     fpsInterval = 1000 / desiredFps;
 }
 
-export function setFrameStartTime(now: number) {
+function initBasicStage(canvasSelector: string) {
+    const stage = new BasicStage();
+    stage.initForCanvas(canvasSelector);
+    mainStage = stage;
+}
+
+function setFrameStartTime(now: number) {
     startTime = now;
 }
 
-export function getFrameDuration(): number {
+function getFrameDuration(): number {
     const now = Date.now();
     return now - startTime;
 }
 
-export function getFpsInterval(): number {
+function getFpsInterval(): number {
     return fpsInterval;
+}
+
+function loop() {
+    window.requestAnimationFrame(loop);
+
+    if (getFrameDuration() > getFpsInterval()) {
+        setFrameStartTime(Date.now() - (getFrameDuration() % getFpsInterval()));
+
+        const stage = mainStage as BasicStage;
+        stage.clear();
+        stage.update();
+        stage.paint();
+    }
 }

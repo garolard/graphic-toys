@@ -19,7 +19,6 @@ describe('rectangle', () => {
         const fakeStage = createStage();
         const rect = getBaseRectangle();
         fakeStage.addActor(rect);
-        
         fakeStage.update();
         fakeStage.update();
 
