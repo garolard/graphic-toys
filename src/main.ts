@@ -1,44 +1,39 @@
 import * as Game from './game';
+import { BasicStage } from './game';
 import { Point, Size } from './foundation';
 import { Rectangle } from './shapes';
 
-
-
-function clearStage() {
-    const stage = Game.getCanvas();
-    stage.context.clearRect(0, 0, stage.size.width, stage.size.height);
-    stage.context.fillStyle = 'rgb(0,0,0)';
-    stage.context.fillRect(0, 0, stage.size.width, stage.size.height);
-}
+let stage: BasicStage;
 
 function start() {
-    Game.init();
-    Game.setDesiredFps(50);
+    stage = Game.getBasicStage('main-canvas');
+    Game.setDesiredFps(60);
     Game.setFrameStartTime(Date.now());
 
-    clearStage();
-    Game.addGameObject(getBasicRectangle());
+    stage.clear();
+    // stage.context.fillStyle = 'rgb(0,0,0)';
+    // stage.context.fillRect(0, 0, stage.bounds.width, stage.bounds.height);
+    stage.addActor(getBasicRectangle());
 
-    const rect = new Rectangle(Game.getCanvas(), {x: 40, y: 40}, {width: 20, height: 20});
-    Game.addGameObject(rect);
+    const rect = new Rectangle({x: 40, y: 40}, {width: 20, height: 20});
+    stage.addActor(rect);
 
-    const rect2 = new Rectangle(Game.getCanvas(), {x: 400, y: 53}, {width: 45, height: 45});
-    Game.addGameObject(rect2);
+    const rect2 = new Rectangle({x: 400, y: 53}, {width: 45, height: 45});
+    stage.addActor(rect2);
 
     loop();
 }
 
 function getBasicRectangle(): Rectangle {
-    const stage = Game.getCanvas();
-
+    // El stage debería exponer su tamaño??
     const canvasCenter: Point = {
-        x: stage.size.width / 2,
-        y: stage.size.height / 2
+        x: 800 / 2,
+        y: 600 / 2
     };
     const recSize: Size = {
         width: 100, height: 100
     };
-    const rect = new Rectangle(stage, canvasCenter, recSize);
+    const rect = new Rectangle(canvasCenter, recSize);
     return rect;
 }
 
@@ -48,19 +43,10 @@ function loop() {
     if (Game.getFrameDuration() > Game.getFpsInterval()) {
         Game.setFrameStartTime(Date.now() - (Game.getFrameDuration() % Game.getFpsInterval()));
 
-        draw();
-    }
-}
-
-function draw() {
-    clearStage();
-
-    for (const entity of Game.entities()) {
-        entity.update();
-    }
-
-    for (const entity of Game.entities()) {
-        entity.paint();
+        const basicStage = stage as BasicStage;
+        basicStage.clear();
+        basicStage.update();
+        basicStage.paint();
     }
 }
 

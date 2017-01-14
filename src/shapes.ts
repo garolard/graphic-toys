@@ -1,17 +1,14 @@
-import * as Game from './game'; // Llamadas a Game acoplan las clases al contexto propio de HTML
-import { GameObject } from './game';
+import { Actor } from './game';
 import { Point, Size } from './foundation';
 
-export class Rectangle implements GameObject {
+export class Rectangle implements Actor {
 
-    private stage: Game.GameStage;
     private rectCenter: Point;
     private rectSize: Size;
     private horizontalDirection: number;
     private verticalDirection: number;
 
-    constructor(stage: Game.GameStage, center: Point, size: Size) {
-        this.stage = stage;
+    constructor(center: Point, size: Size) {
         this.rectCenter = center;
         this.rectSize = size;
         this.horizontalDirection = 0;
@@ -26,15 +23,15 @@ export class Rectangle implements GameObject {
         return this.rectSize;
     }
 
-    public update() {
+    public update(stageBounds: Size) {
         if (this.isMovingToLeft()) {
-            if (!this.reachLeftLimit()) {
+            if (!this.reachLeftLimit(stageBounds)) {
                 this.rectCenter.x -= 5;
             } else {
                 this.horizontalDirection = 1;
             }
         } else {
-            if (!this.reachRightLimit()) {
+            if (!this.reachRightLimit(stageBounds)) {
                 this.rectCenter.x += 5;
             } else {
                 this.horizontalDirection = 0;
@@ -42,13 +39,13 @@ export class Rectangle implements GameObject {
         }
 
         if (this.isMovingToTop()) {
-            if (!this.reachTopLimit()) {
+            if (!this.reachTopLimit(stageBounds)) {
                 this.rectCenter.y -= 5;
             } else {
                 this.verticalDirection = 1;
             }
         } else {
-            if (!this.reachBottomLimit()) {
+            if (!this.reachBottomLimit(stageBounds)) {
                 this.rectCenter.y += 5;
             } else {
                 this.verticalDirection = 0;
@@ -56,9 +53,9 @@ export class Rectangle implements GameObject {
         }
     }
 
-    public paint() {
-        this.stage.context.fillStyle = 'rgb(255, 255, 255)';
-        this.stage.context.fillRect(
+    public paint(context: CanvasRenderingContext2D) {
+        context.fillStyle = 'rgb(255, 255, 255)';
+        context.fillRect(
             this.rectCenter.x - this.rectSize.width / 2,
             this.rectCenter.y - this.rectSize.height / 2,
             this.rectSize.width,
@@ -81,19 +78,19 @@ export class Rectangle implements GameObject {
     //     return this.verticalDirection === 1;
     // }
 
-    private reachLeftLimit(): boolean {
+    private reachLeftLimit(bounds: Size): boolean {
         return this.rectCenter.x - this.rectSize.width / 2 <= 0;
     }
 
-    private reachRightLimit(): boolean {
-        return this.rectCenter.x + this.rectSize.width / 2 >= this.stage.size.width;
+    private reachRightLimit(bounds: Size): boolean {
+        return this.rectCenter.x + this.rectSize.width / 2 >= bounds.width;
     }
 
-    private reachTopLimit(): boolean {
+    private reachTopLimit(bounds: Size): boolean {
         return this.rectCenter.y - this.rectSize.height / 2 <= 0;
     }
 
-    private reachBottomLimit(): boolean {
-        return this.rectCenter.y + this.rectSize.height / 2 >= this.stage.size.height;
+    private reachBottomLimit(bounds: Size): boolean {
+        return this.rectCenter.y + this.rectSize.height / 2 >= bounds.height;
     }
 }
