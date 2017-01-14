@@ -11,6 +11,7 @@ export interface Stage {
 }
 
 export interface Actor {
+    isAlive: boolean;
     update(stageBounds: Size): void;
     paint(context: CanvasRenderingContext2D): void;
 }
@@ -41,16 +42,24 @@ export class BasicStage implements Stage {
         this.actors.push(newActor);
     }
 
-    public removeActor(actor: Actor) {
-        this.actors = this.actors.filter((registeredActor) => registeredActor !== actor);
-    }
-
     public update() {
+        this.removeDeadActors();
         this.actors.forEach((actor) => actor.update(this.bounds));
     }
 
     public paint() {
         this.actors.forEach((actor) => actor.paint(this.context));
+    }
+
+    private removeActor(actor: Actor) {
+        this.actors = this.actors.filter((ac) => ac !== actor);
+    }
+
+    private removeDeadActors() {
+        const self = this;
+        this.actors
+            .filter((actor) => actor.isAlive === false)
+            .forEach((actor) => self.removeActor(actor));
     }
 }
 

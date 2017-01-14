@@ -1,7 +1,7 @@
 import 'mocha';
 import { expect } from 'chai';
 
-import { Stage } from '../src/game';
+import { Stage, Actor } from '../src/game';
 import { Point, Size } from '../src/foundation';
 import { Rectangle } from '../src/shapes';
 
@@ -40,7 +40,7 @@ describe('rectangle', () => {
 
 class FakeStage implements Stage {
     private bounds: Size;
-    private actors: Rectangle[];
+    private actors: Actor[];
 
     public init() {
         this.bounds = {
